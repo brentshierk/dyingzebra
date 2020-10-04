@@ -5,7 +5,31 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 
+#selenium config
+DRIVER_PATH = '/Users/brent/Desktop/chromedriver'
+# driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+# driver.get('https://youtube.com')
+
+options = Options()
+options.headless = False
+options.add_argument("--window-size=1920,1200")
+
+driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
+driver.get("https://www.gradescope.com/")
+find_login_button = driver.find_element_by_xpath('/html/body/div/main/div[2]/div/header/nav/div[2]/span[3]/button').click()
+driver.implicitly_wait(15)
+send_login_username = driver.find_element_by_xpath('//*[@id="session_email"]').send_keys('brent.shierk@students.makeschool.com')
+send_login_password = driver.find_element_by_xpath('//*[@id="session_password"]').send_keys('bls24511289!')
+click_login_button = driver.find_element_by_xpath('//*[@id="login-modal"]/div/div[1]/form/div[4]/input').click()
+driver.implicitly_wait(15)
+first_class = driver.find_element_by_xpath('//*[@id="account-show"]/div[1]/div/a[1]').click()
+find_class_name = driver.find_element_by_xpath('//*[@id="main-content"]/div[2]/div/header/h1').get_attribute('innerHTML').splitlines()[0]
+className = find_class_name
+print(className)
+driver.quit()
+print(className)
 #app config
 DEBUG = True
 
