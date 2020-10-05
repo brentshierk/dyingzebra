@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/brent/Desktop/Development/MakeSchool/web1.1/homework/final_project/env"
+VIRTUAL_ENV="/Users/brent/Desktop/Development/MakeSchool/web1.1/homework/dyingzebra/env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

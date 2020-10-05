@@ -1,11 +1,12 @@
+
 from selenium import webdriver
+
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 
 #selenium config
 DRIVER_PATH = '/Users/brent/Desktop/chromedriver'
-# driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-# driver.get('https://youtube.com')
+
 
 options = Options()
 options.headless = False
@@ -44,9 +45,39 @@ print(get_assignment_status)
 get_assignment_dueDate = driver.find_element_by_xpath('//*[@id="assignments-student-table"]/tbody/tr[1]/td[2]/div/div[3]/span[2]').get_attribute('innerHTML')
 print(get_assignment_dueDate)
 
-driver.quit()
+
 
 
 
 #login_gradescope()
 #get_assignment_data()
+
+
+
+
+
+table = driver.find_element_by_xpath('//*[@id="assignments-student-table"]/tbody')
+i = 1
+
+# while table.find_element_by_xpath(f'.//tr[{i}]') is not None:
+#     row = table.find_element_by_xpath(f'.//tr[{i}]')
+#     print([a.text for a in row.find_elements_by_xpath('.//th/a')])
+#     i += 1
+# # //*[@id="assignments-student-table"]/tbody/tr[1]/th/a
+# # //*[@id="assignments-student-table"]/tbody/tr[2]/th/a
+
+
+# while table.find_element_by_xpath(f'.//tr[{i}]') is not None:
+#     row = table.find_element_by_xpath(f'.//tr[{i}]')
+#     print([td.text for td in row.find_elements_by_xpath('.//td[1]')])
+    
+#     i += 1
+
+while table.find_element_by_xpath(f'.//tr[{i}]') is not None:
+    row = table.find_element_by_xpath(f'.//tr[{i}]')
+    print([td.text for td in row.find_elements_by_xpath('.//td[2]/div/div/span[2]')])
+    
+    i += 1
+#//*[@id="assignments-student-table"]/tbody/tr[1]/td[2]/div/div/span[2]
+
+   
