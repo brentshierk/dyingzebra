@@ -9,7 +9,7 @@ DRIVER_PATH = '/Users/brent/Desktop/chromedriver'
 
 
 options = Options()
-options.headless = False
+options.headless = True
 options.add_argument("--window-size=1920,1200")
 
 driver = webdriver.Chrome(options=options, executable_path=DRIVER_PATH)
@@ -58,26 +58,44 @@ print(get_assignment_dueDate)
 
 table = driver.find_element_by_xpath('//*[@id="assignments-student-table"]/tbody')
 i = 1
-
+#scrape gradescope for assignment names 
 # while table.find_element_by_xpath(f'.//tr[{i}]') is not None:
+#     assignment_names = []
 #     row = table.find_element_by_xpath(f'.//tr[{i}]')
-#     print([a.text for a in row.find_elements_by_xpath('.//th/a')])
+#     assignment_names.append(([a.text for a in row.find_elements_by_xpath('.//th/a')]))
 #     i += 1
+#     if i == 10:
+#         print('end of loop')
+#         break
+#     #print([a.text for a in row.find_elements_by_xpath('.//th/a')])
+#     print(assignment_names)
+
+    
 # # //*[@id="assignments-student-table"]/tbody/tr[1]/th/a
 # # //*[@id="assignments-student-table"]/tbody/tr[2]/th/a
 
-
+# scrape for assignment grade status 
 # while table.find_element_by_xpath(f'.//tr[{i}]') is not None:
+#     grades = []
 #     row = table.find_element_by_xpath(f'.//tr[{i}]')
-#     print([td.text for td in row.find_elements_by_xpath('.//td[1]')])
-    
+#     grades.append(([td.text for td in row.find_elements_by_xpath('.//td[1]')]))
 #     i += 1
-
-while table.find_element_by_xpath(f'.//tr[{i}]') is not None:
-    row = table.find_element_by_xpath(f'.//tr[{i}]')
-    print([td.text for td in row.find_elements_by_xpath('.//td[2]/div/div/span[2]')])
+#     if i == 10:
+#         print('end of loop')
+#         break
+#     print(grades)
     
+#scrape for due date of assignment 
+while table.find_element_by_xpath(f'.//tr[{i}]') is not None:
+    due_date =[]
+    row = table.find_element_by_xpath(f'.//tr[{i}]')
+    due_date.append(([td.text for td in row.find_elements_by_xpath('.//td[2]/div/div/span[2]')]))
     i += 1
+    if i == 10:
+        print('end of loop')
+        break
+    print(due_date)
+    
 #//*[@id="assignments-student-table"]/tbody/tr[1]/td[2]/div/div/span[2]
 
    
