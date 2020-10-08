@@ -24,6 +24,7 @@
                 <span v-if="book.read">Yes</span>
                 <span v-else>No</span>
               </td>
+              
               <td>
                 <div class="btn-group" role="group">
                   <button type="button" class="btn btn-warning btn-sm">Update</button>

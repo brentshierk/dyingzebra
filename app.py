@@ -5,6 +5,7 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
 
+
 #app config
 DEBUG = True
 
@@ -34,9 +35,13 @@ def all_books():
             'author': post_data.get('author'),
             'read': post_data.get('read')
         }
-        BOOKS.append(new_Book)
+        #BOOKS.append(new_Book)
         response_object['message'] = 'Book added!'
         result = mongo.db.assignments.insert_one(new_Book)
+        inserted_id = result.inserted_id
+        assignment_id=inserted_id
+        stored_book  = mongo.db.assignments.find_one({'_id':ObjectId(assignment_id)})
+        print(assignment_id)
     else:
         response_object['books'] = BOOKS
     return jsonify(response_object)
