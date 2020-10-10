@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<main>
+    <h1>Add an assignment</h1>
+<!-- 
+    <form method='POST'>
+        <fieldset>
+            <legend>compleate the form to add a new assignment</legend>
+
+            <label>
+                assignment's name:
+                <input type="text" name="assignment_name">
+            </label>
+            
+            <label>
+                Plant's variety:
+                <input type="text" name="variety">
+            </label>
+
+            <label>
+                Plant's photo URL:
+                <input type="text" name="photo">
+            </label>
+
+            <label>
+                Date planted:
+                <input type="date" name="date_planted">
+            </label>
+
+            <input type="submit" class="submit" value="Submit!">
+        </fieldset>
+    </form> -->
+
+    <form method="POST">
+  <div class="form-group">
+    <label for="exampleFormControlInput1">Assignment Name</label>
+    <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="home work 1" name="assignment_name">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">select Class</label>
+    <select class="form-control"  name="class_name">
+      <option>Web 1.1</option>
+      <option>CS 1.0</option>
+      <option>SPD 1.0</option>
+      <option>INT 1.0</option>
+      
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">select Class</label>
+    <select class="form-control" name="submit_status">
+      <option>submitted</option>
+      <option>not submitted</option>
+      
+      
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">due date</label>
+     <input type="date" name="due_date">
+  </div>
+  
+  <div>
+      <input type="submit" class="submit" value="Submit!">
+  </div>
+  <div class="form-group">
+      
+  </div>
+</form>
+</main>
+
+{% endblock content %}

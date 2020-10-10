@@ -16,55 +16,119 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/final_project"
 mongo = PyMongo(app)
 CORS(app, resources={r'/*': {'origins': '*'}})
 
-@app.route("/" ,methods=['GET','POST'])
+@app.route('/')
+def assignment_list():
+    """Display the plants list page."""
 
-
-@app.route('/ping', methods=['GET'])
-def ping_pong():
+    assignments_data = mongo.db.assignments.find({})
+    print(assignments_data)
     
-    return jsonify('pong!!')
 
-
-@app.route('/Books', methods=['GET', 'POST'])
-def all_books():
-    response_object = {'status':'success'}
-    if request.method == "POST":
-        post_data = request.get_json()
-        new_Book ={
-            'title': post_data.get('title'),
-            'author': post_data.get('author'),
-            'read': post_data.get('read')
-        }
-        #BOOKS.append(new_Book)
-        response_object['message'] = 'Book added!'
-        result = mongo.db.assignments.insert_one(new_Book)
-        inserted_id = result.inserted_id
-        assignment_id=inserted_id
-        stored_book  = mongo.db.assignments.find_one({'_id':ObjectId(assignment_id)})
-        print(assignment_id)
-    else:
-        response_object['books'] = BOOKS
-    return jsonify(response_object)
-
-BOOKS = [
-    {
-        'title': 'On the Road',
-        'author': 'Jack Kerouac',
-        'read': True
-    },
-    {
-        'title': 'Harry Potter and the Philosopher\'s Stone',
-        'author': 'J. K. Rowling',
-        'read': False
-    },
-    {
-        'title': 'Green Eggs and Ham',
-        'author': 'Dr. Seuss',
-        'read': True
+    context = {
+        'assignments': assignments_data,
     }
-]
+    return render_template('assignment_list.html', **context)
+
+@app.route('/about')
+def about():
+    """Display the about page."""
+    return render_template('about.html')
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    """Display the plant creation page & process data from the creation form."""
+    if request.method == 'POST':
+        
+        new_assignment = {
+            'class_name': request.form.get('class_name'),
+            'assignment_name': request.form.get('assignment_name'),
+            'due_date':request.form.get('due_date'),
+            'submit_status': request.form.get('submit_status'),
+        }
+      
+        result = mongo.db.assignments.insert_one(new_assignment)
+        inserted_id = result.inserted_id
+        return  redirect(url_for('detail', assignment_id=inserted_id))
+
+    else:
+        return render_template('create.html')
+
+@app.route('/assignments/<assignment_id>')
+def detail(assignment_id):
+    """Display the plant detail page & process data from the harvest form."""
+
+    assignment_to_show = mongo.db.assignments.find_one({'_id':ObjectId(assignment_id)})
+    
+    print(assignment_id)
+   
+    harvests = list(mongo.db.harvest.find({'assignment_id':assignment_id}))
+    # for harvest in harvests:
+    #     print(harvest)
     
 
+    context = {
+        'assignment' : assignment_to_show,
+        'h': harvests,
+        'assignment_id': assignment_id
+    }
+
+    print(assignment_to_show)
+    return render_template('detail.html', **context)
+    
+
+@app.route('/harvest/<assignment_id>', methods=['POST'])
+def harvest(assignment_id):
+    """
+    Accepts a POST request with data for 1 harvest and inserts into database.
+    """
+    new_harvest = {
+        'quantity': request.form.get('harvested_amount'), # e.g. '3 tomatoes'
+        #'date': request.form.get('date_planted'),
+        'assignment_id': assignment_id
+    }
+    
+ 
+    harvest_plant = mongo.db.harvest.insert_one(new_harvest)
+
+    return redirect(url_for('detail', assignment_id=assignment_id))
+
+@app.route('/edit/<assignment_id>', methods=['GET', 'POST'])
+def edit(assignment_id):
+    """Shows the edit page and accepts a POST request with edited data."""
+    if request.method == 'POST':
+        
+        new_assignment = {
+            'class_name': request.form.get('class_name'),
+            'assignment_name': request.form.get('assignment_name'),
+            'due_date':request.form.get('due_date') ,
+            'submit_status': request.form.get('submit_status')
+        }
+        
+        mongo.db.assignments.update_one({'_id':ObjectId(assignment_id)},{'$set':new_assignment})
+
+        
+        return redirect(url_for('detail', assignment_id=assignment_id))
+    else:
+       
+        assignment_to_show = mongo.db.assignments.find_one({'_id':ObjectId(assignment_id)})
+        print('---')
+        print(assignment_to_show)
+
+        context = {
+            'assignment': assignment_to_show
+        }
+
+        return render_template('edit.html', **context)
+
+@app.route('/delete/<assignment_id>', methods=['POST'])
+def delete(assignment_id):
+   
+    mongo.db.assignment.delete_one({'_id':ObjectId(assignment_id)})
+
+    
+    mongo.db.harvests.delete_many({'_id':ObjectId(assignment_id)})
+
+    return redirect(url_for('assignment_list'))
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
