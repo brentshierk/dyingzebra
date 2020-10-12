@@ -8,30 +8,28 @@
 
         <a href="/create" class="nav">Add an assignment</a>
 
-        {#
-            TODO: All of the following cards are what we'd refer to as
-            "hard-coded". That is, their values do not actually come from the 
-            database! Refactor this page to use a 'for' loop to display all
-            plants with the data passed from the route function's context.
-
-            HINT: Use the plant's _id field as the id for constructing URLs.
-        #}
-
+      
+        <table class="table table-sm table-dark">
         <div id="items">
 
-            {% for plant in plants %}
-                
+            {% for assignment in assignments %}
+                    
             <div class="card">
-                <a href="/plant/{{plant._id}}"><img src="{{ plant.photo_url }}"></a>
+                
+                <a href="/assignments/{{assignment._id}}"></a>
                 <div class="card-content">
-                    <a href="/plant/{{plant._id}}">{{ plant.name }}</a>
+                    <a >{{assignment.class_name}}</a>
+                    <a href="/assignments/{{assignment._id}}">{{ assignment.assignment_name }}</a>
                 </div>
             </div>
+        
+
+            
             {% endfor %}
 
             
     </div>
-
+</table>
 </main>
 
 {% endblock content %}

@@ -1,6 +1,6 @@
 #imports
 from flask import Flask, render_template, redirect,url_for,jsonify,request
-from flask_cors import CORS
+#from flask_cors import CORS
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -14,7 +14,7 @@ app.config.from_object(__name__)
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/final_project"
 mongo = PyMongo(app)
-CORS(app, resources={r'/*': {'origins': '*'}})
+#CORS(app, resources={r'/*': {'origins': '*'}})
 
 @app.route('/')
 def assignment_list():
@@ -61,14 +61,14 @@ def detail(assignment_id):
     
     print(assignment_id)
    
-    harvests = list(mongo.db.harvest.find({'assignment_id':assignment_id}))
+    grades = list(mongo.db.grades.find({'assignment_id':assignment_id}))
     # for harvest in harvests:
     #     print(harvest)
     
 
     context = {
         'assignment' : assignment_to_show,
-        'h': harvests,
+        'grades': grades,
         'assignment_id': assignment_id
     }
 
@@ -76,19 +76,19 @@ def detail(assignment_id):
     return render_template('detail.html', **context)
     
 
-@app.route('/harvest/<assignment_id>', methods=['POST'])
-def harvest(assignment_id):
+@app.route('/grades/<assignment_id>', methods=['POST'])
+def grades(assignment_id):
     """
     Accepts a POST request with data for 1 harvest and inserts into database.
     """
-    new_harvest = {
-        'quantity': request.form.get('harvested_amount'), # e.g. '3 tomatoes'
-        #'date': request.form.get('date_planted'),
+    new_grade = {
+        'grade': request.form.get('grade_score'), # e.g. '3 tomatoes'
+        'date': request.form.get('due_date'),
         'assignment_id': assignment_id
     }
     
  
-    harvest_plant = mongo.db.harvest.insert_one(new_harvest)
+    update_grade = mongo.db.grades.insert_one(new_grade)
 
     return redirect(url_for('detail', assignment_id=assignment_id))
 
@@ -126,7 +126,7 @@ def delete(assignment_id):
     mongo.db.assignment.delete_one({'_id':ObjectId(assignment_id)})
 
     
-    mongo.db.harvests.delete_many({'_id':ObjectId(assignment_id)})
+    mongo.db.grades.delete_many({'_id':ObjectId(assignment_id)})
 
     return redirect(url_for('assignment_list'))
 

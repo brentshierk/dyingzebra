@@ -8,34 +8,36 @@
         
 
         <section id="info">
-            <h3>Info</h3>
+            <h3>Details</h3>
 
-            <strong>Due date Planted</strong>
-            <!-- {{assignment.date_planted}} -->
+            <strong>Due date </strong>
+            {{assignment.due_date}}
             <br><br>
 
-            <strong>Variety</strong>
-            <!-- {{assignment.assignment_name}} -->
+            <strong>assignment name :</strong>
+            {{assignment.assignment_name}}
             <br><br>
 
-            <!-- <a class="nav" href="/edit/{{assignment_id}}">Edit Plant</a><br><br> -->
+            <strong>submission status</strong>
+            {{assignment.submit_status}}
+            <a class="nav" href="/edit/{{assignment_id}}">Edit Assignment</a><br><br>
         </section>
 
-        <!-- <form action="/harvest/{{assignment_id}}" method="POST"> -->
+        <form action="/grades/{{assignment_id}}" method="POST">
             <fieldset>
-                <legend>Harvested:</legend>
+                <legend>Grade:</legend>
                 
                 <label>
-                    Amount harvested
-                    <input type="text" name="harvested_amount" placeholder="e.g. 2 tomatoes">
+                    Grade
+                    <input type="text" name="grade_score" placeholder="100%">
                 </label>
 
                 <label>
-                    Date harvested
+                    Submission Date
                     <input type="date" name="due_date">
                 </label>
 
-                <input type="submit" class="submit" value="Harvest!">
+                <input type="submit" class="submit" value="submit">
             </fieldset>
         </form>
 
@@ -43,12 +45,12 @@
             TODO: Create a for loop here to loop over all harvests (passed in 
             from the route's context) and display their information.
         #}
-        <section id="harvest-history">
-            <h3>Harvest History</h3>
+        <section id="grade-history">
+            <h3>Past grades</h3>
 
             <ul>
-                {% for harvest in harvests%}
-               <!-- <li>{{ harvest.date }}: Harvested {{ harvest.quantity }} {{ harvest.name }}</li> -->
+                {% for grade in grades%}
+               <li>graded on {{ grade.date }}: score {{ grade.grade }}%</li>
                {% endfor %}
             </ul>
         </section>
