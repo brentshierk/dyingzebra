@@ -4,9 +4,7 @@ from flask import Flask, render_template, redirect,url_for,jsonify,request
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
-"""
-adding comment block
-"""
+
 #app config
 DEBUG = True
 
@@ -45,6 +43,7 @@ def create():
             'assignment_name': request.form.get('assignment_name'),
             'due_date':request.form.get('due_date'),
             'submit_status': request.form.get('submit_status'),
+            'submission_link': request.form.get('submission_link')
         }
       
         result = mongo.db.assignments.insert_one(new_assignment)
@@ -102,7 +101,8 @@ def edit(assignment_id):
             'class_name': request.form.get('class_name'),
             'assignment_name': request.form.get('assignment_name'),
             'due_date':request.form.get('due_date') ,
-            'submit_status': request.form.get('submit_status')
+            'submit_status': request.form.get('submit_status'),
+            'submission_link': request.form.get('submission_link')
         }
         
         mongo.db.assignments.update_one({'_id':ObjectId(assignment_id)},{'$set':new_assignment})

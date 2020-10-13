@@ -9,7 +9,7 @@
         <a href="/create" class="nav">Add an assignment</a>
 
       
-        <table class="table table-sm table-dark">
+       
         <div id="items">
 
             {% for assignment in assignments %}
@@ -20,16 +20,20 @@
                 <div class="card-content">
                     <a >{{assignment.class_name}}</a>
                     <a href="/assignments/{{assignment._id}}">{{ assignment.assignment_name }}</a>
+                    <a>{{assignment.due_date}}</a>
+                    <a >{{assignment.submit_status}}</a>
+                    <a href="{{assignment.submission_link}}">submission link</a>
+                    
                 </div>
             </div>
-        
+      
 
             
             {% endfor %}
 
             
     </div>
-</table>
+
 </main>
 
 {% endblock content %}
