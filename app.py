@@ -1,6 +1,5 @@
 #imports
 from flask import Flask, render_template, redirect,url_for,jsonify,request
-#from flask_cors import CORS
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -13,11 +12,9 @@ app.config.from_object(__name__)
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/final_project"
 mongo = PyMongo(app)
-#CORS(app, resources={r'/*': {'origins': '*'}})
 
 @app.route('/')
 def assignment_list():
-    """Display the plants list page."""
 
     assignments_data = mongo.db.assignments.find({})
     print(assignments_data)
@@ -30,12 +27,10 @@ def assignment_list():
 
 @app.route('/about')
 def about():
-    """Display the about page."""
     return render_template('about.html')
 
 @app.route('/create', methods=['GET', 'POST'])
 def create():
-    """Display the plant creation page & process data from the creation form."""
     if request.method == 'POST':
         
         new_assignment = {
@@ -55,15 +50,12 @@ def create():
 
 @app.route('/assignments/<assignment_id>')
 def detail(assignment_id):
-    """Display the plant detail page & process data from the harvest form."""
 
     assignment_to_show = mongo.db.assignments.find_one({'_id':ObjectId(assignment_id)})
     
     print(assignment_id)
    
     grades = list(mongo.db.grades.find({'assignment_id':assignment_id}))
-    # for harvest in harvests:
-    #     print(harvest)
     
 
     context = {
@@ -78,11 +70,9 @@ def detail(assignment_id):
 
 @app.route('/grades/<assignment_id>', methods=['POST'])
 def grades(assignment_id):
-    """
-    Accepts a POST request with data for 1 harvest and inserts into database.
-    """
+    
     new_grade = {
-        'grade': request.form.get('grade_score'), # e.g. '3 tomatoes'
+        'grade': request.form.get('grade_score'), 
         'date': request.form.get('due_date'),
         'assignment_id': assignment_id
     }
@@ -94,7 +84,6 @@ def grades(assignment_id):
 
 @app.route('/edit/<assignment_id>', methods=['GET', 'POST'])
 def edit(assignment_id):
-    """Shows the edit page and accepts a POST request with edited data."""
     if request.method == 'POST':
         
         new_assignment = {

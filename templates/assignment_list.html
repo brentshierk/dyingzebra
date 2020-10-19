@@ -11,21 +11,54 @@
       
        
         <div id="items">
-
-            {% for assignment in assignments %}
-                    
-            <div class="card">
-                
-                <a href="/assignments/{{assignment._id}}"></a>
-                <div class="card-content">
-                    <a >{{assignment.class_name}}</a>
-                    <a href="/assignments/{{assignment._id}}">{{ assignment.assignment_name }}</a>
-                    <a>{{assignment.due_date}}</a>
-                    <a >{{assignment.submit_status}}</a>
-                    <a href="{{assignment.submission_link}}">submission link</a>
-                    
+            <div class="container"></div>
+            <div class="row">
+                <div class="col-sm">
+                    <p>class name</p>
+                </div>
+                <div class="col-sm">
+                    <p>assignnment name</p>
+                </div>
+                <div class="col-sm">
+                    <p>due date</p>
+                </div>
+                <div class="col-sm">
+                    <p>links</p>
                 </div>
             </div>
+            </div>
+            
+            {% for assignment in assignments %}
+                    
+        
+                
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+                         
+                        <a href="/assignments/{{assignment._id}}">{{assignment.class_name}}</a>
+                    </div>
+                    <div class="col-sm">
+                        
+                        <a href="/assignments/{{assignment._id}}">{{ assignment.assignment_name }}</a> 
+                    </div>
+                    <div class="col-sm">
+                        
+                        <a>{{assignment.due_date}}</a>
+                    </div>
+                    <div class="col-sm">
+                        
+                        <a >{{assignment.submit_status}}</a>
+                    </div>
+                    <div class="col-sm">
+                        
+                        <a href="{{assignment.submission_link}}">submission link</a>
+                    </div>
+
+                </div>
+            </div>
+            
+
       
 
             
